@@ -975,6 +975,21 @@ void SingleTimestepCollisionEvaluator::CalcCollisions(const Eigen::Ref<Eigen::Ve
   }
 }
 
+void SingleTimestepCollisionEvaluator::CalcCollisions(const std::vector<const Eigen::Ref<Eigen::VectorXd>>& dof_vals,
+                                                      std::vector<tesseract_collision::ContactResultMap>& dist_results)
+{
+  if (dof_vals.size() != 1) {
+    LOG_ERROR("size of dof_vals is %s. Expected 1.", dof_vals.size());
+    return;
+  }
+  if (dist_results.size() != 1) {
+    LOG_ERROR("size of dist_results is %s. Expected 1.", dist_results.size());
+    return;
+  }
+
+  CalcCollisions(dof_vals[0], dist_results[0]);
+}
+
 void SingleTimestepCollisionEvaluator::CalcDistExpressions(const DblVec& x,
                                                            sco::AffExprVector& exprs,
                                                            AlignedVector<Eigen::Vector2d>& exprs_data)
@@ -1114,6 +1129,21 @@ DiscreteCollisionEvaluator::DiscreteCollisionEvaluator(tesseract_kinematics::For
       PRINT_AND_THROW("Invalid CollisionExpressionEvaluatorType for DiscreteCollisionEvaluator!");
     }
   };
+}
+
+void DiscreteCollisionEvaluator::CalcCollisions(const std::vector<const Eigen::Ref<Eigen::VectorXd>>& dof_vals,
+                                                      std::vector<tesseract_collision::ContactResultMap>& dist_results)
+{
+  if (dof_vals.size() != 2) {
+    LOG_ERROR("size of dof_vals is %s. Expected 2.", dof_vals.size());
+    return;
+  }
+  if (dist_results.size() != 2) {
+    LOG_ERROR("size of dist_results is %s. Expected 2.", dist_results.size());
+    return;
+  }
+
+  CalcCollisions(dof_vals[0], dof_vals[1], dist_results[0]);
 }
 
 void DiscreteCollisionEvaluator::CalcCollisions(const DblVec& x, tesseract_collision::ContactResultMap& dist_results)
@@ -1349,6 +1379,21 @@ CastCollisionEvaluator::CastCollisionEvaluator(tesseract_kinematics::ForwardKine
       PRINT_AND_THROW("Invalid CollisionExpressionEvaluatorType for CastCollisionEvaluator!");
     }
   };
+}
+
+void CastCollisionEvaluator::CalcCollisions(const std::vector<const Eigen::Ref<Eigen::VectorXd>>& dof_vals,
+                                            std::vector<tesseract_collision::ContactResultMap>& dist_results)
+{
+  if (dof_vals.size() != 2) {
+    LOG_ERROR("size of dof_vals is %s. Expected 2.", dof_vals.size());
+    return;
+  }
+  if (dist_results.size() != 2) {
+    LOG_ERROR("size of dist_results is %s. Expected 2.", dist_results.size());
+    return;
+  }
+
+  CalcCollisions(dof_vals[0], dof_vals[1], dist_results[0]);
 }
 
 void CastCollisionEvaluator::CalcCollisions(const DblVec& x, tesseract_collision::ContactResultMap& dist_results)

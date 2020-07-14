@@ -34,7 +34,7 @@ TRAJOPT_IGNORE_WARNINGS_POP
 
 namespace trajopt
 {
-CollisionConstraintIfopt::CollisionConstraintIfopt(SingleTimestepCollisionEvaluator::Ptr collision_evaluator,
+CollisionConstraintIfopt::CollisionConstraintIfopt(CollisionEvaluator::Ptr collision_evaluator,
                                                    JointPosition::ConstPtr position_var,
                                                    const std::string& name)
   : ifopt::ConstraintSet(1, name)

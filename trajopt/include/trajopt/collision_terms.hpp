@@ -123,6 +123,9 @@ struct CollisionEvaluator
    */
   virtual void CalcCollisions(const DblVec& x, tesseract_collision::ContactResultMap& dist_results) = 0;
 
+  virtual void CalcCollisions(const std::vector<const Eigen::Ref<Eigen::VectorXd>>& dof_vals,
+                              std::vector<tesseract_collision::ContactResultMap>& dist_results) = 0;
+
   /**
    * @brief Plot the collision evaluator results
    * @param plotter Plotter
@@ -398,13 +401,19 @@ public:
   void CalcDistExpressions(const DblVec& x,
                            sco::AffExprVector& exprs,
                            AlignedVector<Eigen::Vector2d>& exprs_data) override;
+
   void CalcCollisions(const DblVec& x, tesseract_collision::ContactResultMap& dist_results) override;
+
+  void CalcCollisions(const std::vector<const Eigen::Ref<Eigen::VectorXd>>& dof_vals,
+                      std::vector<tesseract_collision::ContactResultMap>& dist_results) override;
+
   /**
    * @brief Given joint names and values calculate the collision results for this evaluator
    * @param dof_vals Joint values set prior to collision checking
    * @param dist_results Contact Results Map
    */
   void CalcCollisions(const Eigen::Ref<Eigen::VectorXd>& dof_vals, tesseract_collision::ContactResultMap& dist_results);
+
   void Plot(const tesseract_visualization::Visualization::Ptr& plotter, const DblVec& x) override;
   sco::VarVector GetVars() override { return vars0_; }
 
@@ -447,6 +456,11 @@ public:
   void CalcCollisions(const Eigen::Ref<Eigen::VectorXd>& dof_vals0,
                       const Eigen::Ref<Eigen::VectorXd>& dof_vals1,
                       tesseract_collision::ContactResultMap& dist_results);
+
+
+  void CalcCollisions(const std::vector<const Eigen::Ref<Eigen::VectorXd>>& dof_vals,
+                      std::vector<tesseract_collision::ContactResultMap>& dist_results) override;
+
   void Plot(const tesseract_visualization::Visualization::Ptr& plotter, const DblVec& x) override;
   sco::VarVector GetVars() override { return concat(vars0_, vars1_); }
 
@@ -489,6 +503,10 @@ public:
   void CalcCollisions(const Eigen::Ref<Eigen::VectorXd>& dof_vals0,
                       const Eigen::Ref<Eigen::VectorXd>& dof_vals1,
                       tesseract_collision::ContactResultMap& dist_results);
+
+  void CalcCollisions(const std::vector<const Eigen::Ref<Eigen::VectorXd>>& dof_vals,
+                      std::vector<tesseract_collision::ContactResultMap>& dist_results) override;
+
   void Plot(const tesseract_visualization::Visualization::Ptr& plotter, const DblVec& x) override;
   sco::VarVector GetVars() override { return concat(vars0_, vars1_); }
 
